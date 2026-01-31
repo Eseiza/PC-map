@@ -1,7 +1,6 @@
 {
-  "name": "sistema-ubicacion-pcs",
+  "name": "sistema-mapa-pcs",
   "version": "1.0.0",
-  "description": "Sistema para ubicar computadoras en un plano",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
