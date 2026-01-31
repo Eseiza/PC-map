@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Ubicación de PCs</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { height: 600px; width: 100%; border: 2px solid #333; }
+        body { font-family: sans-serif; margin: 20px; }
+        .info { margin-bottom: 10px; padding: 10px; background: #f4f4f4; }
+    </style>
+</head>
+<body>
+
+    <h2>Mapa de Activos IT</h2>
+    <div class="info">
+        <strong>Instrucciones:</strong> Haz clic en el plano para obtener las coordenadas de una PC.
+    </div>
+    
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 1. Configuración del Plano (Coordenadas Simples)
+        const map = L.map('map', {
+            crs: L.CRS.Simple,
+            minZoom: -1
+        });
+
+        // 2. Definir dimensiones (Ancho: 1000px, Alto: 700px)
+        const bounds = [[0, 0], [700, 1000]];
+        // Imagen de ejemplo (puedes poner la URL de tu plano aquí)
+        const imagenPlano = 'https://img.freepik.com/vector-premium/plano-planta-oficina-muebles-vista-superior_101149-144.jpg';
+        
+        L.imageOverlay(imagenPlano, bounds).addTo(map);
+        map.fitBounds(bounds);
+
+        // 3. Función para capturar el clic
+        map.on('click', function(e) {
+            const y = Math.round(e.latlng.lat);
+            const x = Math.round(e.latlng.lng);
+
+            // Crear un marcador temporal
+            const nombre = prompt("Nombre de la PC o Usuario:");
+            
+            if (nombre) {
+                L.marker([y, x]).addTo(map)
+                    .bindPopup(`<b>${nombre}</b><br>X: ${x}, Y: ${y}`)
+                    .openPopup();
+
+                console.log(`Enviar a Render -> Nombre: ${nombre}, X: ${x}, Y: ${y}`);
+                
+                // AQUÍ iría tu fetch para guardar en Render:
+                // fetch('https://tu-api.onrender.com/guardar', { 
+                //    method: 'POST', 
+                //    body: JSON.stringify({ nombre, x, y }) 
+                // });
+            }
+        });
+    </script>
+</body>
+</html>
